@@ -1,0 +1,10 @@
+.gitignore
+.idea/.gitignore
+.idea/codeStyles/
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/sonarlint/
+/springbootlearn.iml
+/.idea/
