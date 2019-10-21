@@ -20,8 +20,49 @@
 </div>
 <script th:src="@{/sockjs.min.js}"></script>
 <script th:src="@{/stomp.min.js}"></script>
+<script th:src="@{/jquery-3.4.1.min.js}"></script>
 <script th:inline="javascript">
+    var stompClient = null;
 
+    function setConnected(connected) {
+        $("#connect").attr("disabled", connected);
+        $("#disconnect").attr("disabled", !connected);
+        $("#conversationDiv").attr()
+        $('#response').html();
+    }
+
+    function connect() {
+        var socket = new SockJS('/endpointWisely');
+        stompClient.connect({}, function (frame) {
+            setConnected(true);
+            console.log("Connect: " + frame);
+            stompClient.subscribe('/topic/getResponse', function (response) {
+                showResponse(JSON.parse(response.body).responseMsg);
+            });
+        });
+
+    }
+
+    function disconnect() {
+        if (stompClient != null) {
+            stompClient.disconnect();
+        }
+        setConnected(false);
+        console.log("Disconnected");
+    }
+
+    function sendName() {
+        var name = $("#name").val();
+
+        stompClient.send("/welcome", {}, JSON.stringify({'name': name}));
+
+    }
+
+    function showResponse(msg) {
+        var response = $("#response");
+        response.html(msg);
+
+    }
 </script>
 </body>
 </html>
