@@ -1,11 +1,8 @@
 #添加Thymeleaf配置
 thymeleaf:
   cache: false
-  prefix: classpath:/templates/
+  prefix: classpath:/templates/**
   suffix: .html
   mode: HTML5
   encoding: UTF-8
   content-type: text/html
-spring:
-  mvc:
-    static-path-pattern: /static/*

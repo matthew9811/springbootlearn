@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <title>Springboot + webSocket +广播式</title>
 </head>
-<body onload="disconnenct()">
+<body onload="disconnect()">
 <noscript><h2 style="color: #ff0000">貌似你的浏览器不支持websocket</h2></noscript>
 <div>
     <div>
-        <button id="connect" onclick="connect();">连接</button>
-        <button id="disconnect" disabled="disabled" onclick="disconnect();">断开</button>
+        <button id="connect" οnclick="connect();">连接</button>
+        <button id="disconnect" disabled="disabled" οnclick="disconnect()">断开连接</button>
     </div>
     <div id="conversationDiv">
         <label>输入你的名字:</label>
@@ -18,25 +18,28 @@
         <p id="response"/>
     </div>
 </div>
-<script th:src="@{/sockjs.min.js}"></script>
-<script th:src="@{/stomp.min.js}"></script>
-<script th:src="@{/jquery-3.4.1.min.js}"></script>
+<script src="https://cdn.bootcss.com/jquery/3.4.1/jquery.js"></script>
+<script src="https://cdn.bootcss.com/sockjs-client/1.4.0/sockjs.js"></script>
+<script src="https://cdn.bootcss.com/stomp.js/2.3.3/stomp.js"></script>
 <script th:inline="javascript">
     var stompClient = null;
 
     function setConnected(connected) {
-        $("#connect").attr("disabled", connected);
-        $("#disconnect").attr("disabled", !connected);
-        $("#conversationDiv").attr()
+        document.getElementById("connect").disabled = connected;
+        document.getElementById('disconnect').disabled = !connected;
+        document.getElementById('conversationDiv').style.visibility = connected ? 'visible' : 'hidden';
         $('#response').html();
     }
 
     function connect() {
         var socket = new SockJS('/endpointWisely');
+        //使用STOMP子协议的WebSocket客户端
+        stompClient = Stomp.over(socket);
         stompClient.connect({}, function (frame) {
             setConnected(true);
-            console.log("Connect: " + frame);
-            stompClient.subscribe('/topic/getResponse', function (response) {
+            console.log('Connected: ' + frame);
+            //通过stompClient.subscribe订阅/topic/getResponse目标发送的消息，这个是在控制器的@SendTo中定义的
+            stompClient.subscribe('/topic/getResponse', function(response){
                 showResponse(JSON.parse(response.body).responseMsg);
             });
         });
@@ -53,7 +56,6 @@
 
     function sendName() {
         var name = $("#name").val();
-
         stompClient.send("/welcome", {}, JSON.stringify({'name': name}));
 
     }
