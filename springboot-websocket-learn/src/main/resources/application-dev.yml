@@ -6,3 +6,6 @@ thymeleaf:
   mode: HTML5
   encoding: UTF-8
   content-type: text/html
+spring:
+  thymeleaf:
+    suffix: .html

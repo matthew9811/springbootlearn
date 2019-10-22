@@ -8,8 +8,8 @@
 <noscript><h2 style="color: #ff0000">貌似你的浏览器不支持websocket</h2></noscript>
 <div>
     <div>
-        <button id="connect" οnclick="connect();">连接</button>
-        <button id="disconnect" disabled="disabled" οnclick="disconnect()">断开连接</button>
+        <button id="connect">连接</button>
+        <button id="disconnect" disabled="disabled">断开连接</button>
     </div>
     <div id="conversationDiv">
         <label>输入你的名字:</label>
@@ -24,6 +24,13 @@
 <script th:inline="javascript">
     var stompClient = null;
 
+    $('#connect').on('click', function (t) {
+        connect();
+    })
+    $('#disconnect').on('click', function (t) {
+        disconnect();
+    })
+
     function setConnected(connected) {
         document.getElementById("connect").disabled = connected;
         document.getElementById('disconnect').disabled = !connected;
@@ -32,6 +39,7 @@
     }
 
     function connect() {
+        console.log('147452566363');
         var socket = new SockJS('/endpointWisely');
         //使用STOMP子协议的WebSocket客户端
         stompClient = Stomp.over(socket);
@@ -39,11 +47,10 @@
             setConnected(true);
             console.log('Connected: ' + frame);
             //通过stompClient.subscribe订阅/topic/getResponse目标发送的消息，这个是在控制器的@SendTo中定义的
-            stompClient.subscribe('/topic/getResponse', function(response){
+            stompClient.subscribe('/topic/getResponse', function (response) {
                 showResponse(JSON.parse(response.body).responseMsg);
             });
         });
-
     }
 
     function disconnect() {
