@@ -28,12 +28,11 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
     /**
      * 配置消息代理
-     *
-     * @param registry
+     *广播式应配置一个 /topic 的消息代理
+     * @param registry 代理
      */
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        //广播式应配置一个 /topic 的消息代理
         registry.enableSimpleBroker("/topic");
     }
 }
