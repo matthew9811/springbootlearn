@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * @date 2019.10.21
  */
 @Configuration
-public class WevServlet extends SpringBootServletInitializer implements ApplicationRunner {
+public class WebServletConfig extends SpringBootServletInitializer implements ApplicationRunner {
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder builder) {

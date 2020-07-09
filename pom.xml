@@ -10,7 +10,6 @@
     <description>进行springboot学习和整合测试</description>
     <modules>
         <module>springboot-websocket-2</module>
-        <module>springboot-websocket-2</module>
     </modules>
     <version>7.0-SNAPSHOT</version>
 
